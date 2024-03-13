@@ -1,4 +1,5 @@
-const URL = './data/';
+// const URL = './data/';
+const URL = 'https://newsapi.org/v2/';
 
 const fetchRequest = async (postfix, {
   method = 'get',
@@ -6,6 +7,7 @@ const fetchRequest = async (postfix, {
   body,
   headers,
   countNews,
+  searchText,
 }) => {
   try {
     const options = {
@@ -19,7 +21,7 @@ const fetchRequest = async (postfix, {
 
     if (response.ok) {
       const data = await response.json();
-      if (callback) return callback(null, data, countNews);
+      if (callback) return callback(null, data, countNews, searchText);
       return;
     }
 

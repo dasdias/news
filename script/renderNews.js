@@ -1,6 +1,8 @@
 // import {loadImg} from './loadImg.js';
 
-const renderNews = (err, data, countNews = false) => {
+
+const renderNews = (err, data, countNews = false, searchText = '') => {
+  const title = document.querySelector('.title');
   if (err) {
     console.warn(err, data);
     return;
@@ -12,6 +14,11 @@ const renderNews = (err, data, countNews = false) => {
     dataItems = dataItems.slice(0, countNews);
   }
 
+  if (searchText) {
+    title.textContent = `По вашему запросу “
+    ${searchText}” найдено ${dataItems.length} результатов`;
+  }
+
   const cardElem = dataItems.map((item) => {
     // const promice = new Promise((resolve, reject) => {
     //   const img = loadImg(item.urlToImage);
@@ -21,7 +28,7 @@ const renderNews = (err, data, countNews = false) => {
     const card = document.createElement('li');
     card.className = 'news-item';
     card.innerHTML = `
-      <img src="${item.urlToImage ? item.urlToImage : './img/nophoto.jpg'}"
+      <img src="${item.urlToImage ? item.urlToImage : './image/nophoto.jpg'}"
         alt="${item.title}" class="news-image" height="200">
         <h3 class="news-title">
         <a href="${item.url}"

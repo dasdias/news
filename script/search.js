@@ -1,32 +1,38 @@
+import {API} from './api.js';
 import fetchRequest from './fetchRequest.js';
 import renderNews from './renderNews.js';
 
 const formSearch = document.querySelector('.form-search');
 
 const wrappernews = document.querySelectorAll('.news-list');
-const title = document.querySelector('.title');
-title.textContent = 'Свежие новости';
 
 formSearch.addEventListener('submit', (e) => {
   e.preventDefault();
   const searchElem = formSearch.querySelector('[type=search]');
   const countryElem = formSearch.querySelector('.js-choice');
-  console.log('countryElem: ', countryElem.value);
-  if (searchElem.value.trim() !== '') {
+  const searchParem = searchElem.value.trim();
+  if (searchParem !== '') {
     searchElem.style.border = '';
 
+
     const search = () => Promise.all([
-      fetchRequest('search.json', {
+      fetchRequest(`everything?q=${searchElem.value}`, {
         callback: renderNews,
+        headers: {
+          'X-API-Key': API,
+        },
         countNews: 8,
+        searchText: searchElem.value,
       }),
-      fetchRequest('headlines.json', {
+      fetchRequest('top-headlines?category=general&country=ru', {
         callback: renderNews,
+        headers: {
+          'X-API-Key': API,
+        },
         countNews: 4,
       }),
     ]);
     search().then(data => {
-      // console.log('data: ', data);
       wrappernews[0].textContent = '';
       wrappernews[0].append(data[0]);
       wrappernews[1].textContent = '';

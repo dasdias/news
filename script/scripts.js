@@ -1,18 +1,28 @@
+import {API} from './api.js';
 import fetchRequest from './fetchRequest.js';
 import renderNews from './renderNews.js';
 import './search.js';
 
 const wrappernews = document.querySelectorAll('.news-list');
-const title = document.querySelector('.title');
-title.textContent = 'Свежие новости';
+// const title = document.querySelector('.title');
+// title.textContent = 'Свежие новости';
 
 const init = () => Promise.all([
-  fetchRequest('search.json', {
+  // everything?q=tesla
+  // search.js
+  fetchRequest('everything?q=news', {
     callback: renderNews,
+    headers: {
+      'X-API-Key': API,
+    },
     countNews: 8,
   }),
-  fetchRequest('headlines.json', {
+  // top-headlines?country=us&category=business
+  fetchRequest('top-headlines?category=general&country=ru', {
     callback: renderNews,
+    headers: {
+      'X-API-Key': API,
+    },
     countNews: 4,
   }),
 ]);
